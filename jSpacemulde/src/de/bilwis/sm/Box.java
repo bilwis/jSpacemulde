@@ -7,7 +7,10 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.World;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 public class Box {
 	
@@ -60,6 +63,16 @@ public class Box {
 			image.setRotation((float) Math.toDegrees(rotation));
 		}
 	}
+	
+	 public void render(GameContainer container, Graphics g)
+	            throws SlickException 
+	 { 
+		 float x, y;
+		 x = body.getPosition().x - width/2;
+		 y = body.getPosition().y - height/2;
+		 
+	     g.drawImage(image, x, y, color);
+	 }
 	
 	public Vec2 getPosition()
 	{
