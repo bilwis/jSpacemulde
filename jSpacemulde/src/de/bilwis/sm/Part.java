@@ -16,12 +16,21 @@ public class Part {
 
 	private int size;
 	
-	private float x, y; 		//TOP LEFT CORNER
+	/**
+	 * These variables store the global coordinates of the top left corner of the part.
+	 */
+	private float x, y;
 	
-	private short rel_x, rel_y;	//NOT IN COORDINATES, BUT IN "PART SIZES"!
+	/**
+	 * These variables store the offset from the structure origin, in "part sizes".
+	 */
+	private short rel_x, rel_y;	
 	
-	private Vec2 offsetVector; 	//Offset of the TOP LEFT CORNER OF THE PART
-								// relative to the CENTER OF THE BODY
+	/**
+	 * This vector represents the offset of the top left corner of the part to the center of the body.
+	 */
+	private Vec2 offsetVector; 
+	
 	private float rotation;
 	
 	private float mass;
@@ -69,22 +78,12 @@ public class Part {
 		if (parent == null)
 			throw new Exception("The part has no parent!");
 		
-		//Rotate offset vector
-		/*if (parentAngle != 0.0f)
-		{
-			offsetVector.x = (float) (((x - parentPos.x) * Math.cos(parentAngle)) - ((parentPos.y - y) * Math.sin(parentAngle)) + parentPos.x);
-			offsetVector.y = (float) (((parentPos.y - y) * Math.cos(parentAngle)) - ((x - parentPos.x) * Math.sin(parentAngle)) + parentPos.y);
-		}*/
-		
 		x = parentPos.x - offsetVector.x;
 		y = parentPos.y - offsetVector.y;
 		
 		if (parentAngle != rotation)
 		{
 			rotation = parentAngle;
-			
-			//image.setCenterOfRotation(-offsetVector.x, -offsetVector.y);
-			//image.setRotation((float)Math.toDegrees(rotation));
 		}
 	}
 

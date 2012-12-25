@@ -23,9 +23,10 @@ public class SimpleTest extends BasicGame {
 	
 	Input input;
 	
-	Box box1;
+	Image cube;
+	
+	Structure box1;
 	Structure ship1;
-	ArrayList<Box> boxes;
 	ArrayList<Structure> structures;
 	
 	World world;
@@ -46,13 +47,8 @@ public class SimpleTest extends BasicGame {
     	
     	container.setMaximumLogicUpdateInterval((int)(TIME_STEP));
     	
-    	//Set up boxes (for rendering)
-    	box1 = new Box(850.0f, 145.0f, 30.0f, 30.0f, 10.0f, new Image("res/cube.png"), Color.red, world);
-    	Box box2 = new Box(100.0f, 150.0f, 30.0f, 30.0f, 1.0f, new Image("res/cube.png"), Color.blue, world);
-    	
-    	boxes = new ArrayList<Box>();
-    	boxes.add(box1);
-    	boxes.add(box2);
+    	//Load images
+    	cube = new Image("res/cube.png");
     	
     	//Set up structures and parts
     	structures = new ArrayList<Structure>();
@@ -88,7 +84,7 @@ public class SimpleTest extends BasicGame {
     		
     		try{
         		ship1.addPart(
-        				new Part(30, new Image("res/cube.png"), new Color(128, ((x+2)*32), ((y+2)*32)), 1.0f),
+        				new Part(30, cube, new Color(128, ((x+2)*32), ((y+2)*32)), 1.0f),
         				x,
         				y);
     			}
@@ -99,7 +95,19 @@ public class SimpleTest extends BasicGame {
     	}
     	
     	structures.add(ship1);
+    	
+    	box1 = new Structure(850.0f, 145.0f, 30, world);
+    	
+    	try {
+			box1.addPart(
+					new Part(30, cube, Color.red, 10.0f), 
+					(short) 0, 
+					(short) 0);
+		} catch (Exception e) {
+			logger.error("Error while creating parts for Box 1: " + e.getMessage());
+		}
 
+    	structures.add(box1);
     }
 
     @Override
@@ -131,11 +139,6 @@ public class SimpleTest extends BasicGame {
     {
     	world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
     	
-    	for (Box b:boxes)
-    	{
-    		b.updatePhysics();
-    	}
-    	
     	for (Structure s:structures)
     	{
     		try {
@@ -151,13 +154,6 @@ public class SimpleTest extends BasicGame {
     public void render(GameContainer container, Graphics g)
             throws SlickException {
     
-        //g.scale(0.25f, 0.25f);
-        
-    	for (Box b:boxes)
-    	{
-    		b.render(container, g);
-    	}
-    	
     	for (Structure s:structures)
     	{
     		s.render(container, g);
